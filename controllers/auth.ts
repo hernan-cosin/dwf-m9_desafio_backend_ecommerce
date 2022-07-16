@@ -135,8 +135,8 @@ export async function verifyEmailAndCode(
       return { error: null, token: null, codeExpired: true };
     }
     // código válido
-    if (!expired) {
-      const token = generate({ userId: dbAuth.data.id });
+    if (!expired) {      
+      const token = generate({ userId: dbAuth.data.userId });
 
       // invalidación del código en dbAuth
       dbAuth.data.code = "";

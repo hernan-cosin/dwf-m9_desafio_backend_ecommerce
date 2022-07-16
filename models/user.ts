@@ -14,7 +14,6 @@ export class User {
     async get() {
         const snap = await this.ref.get()
         this.data = snap.data()
-        return this.data
     }
 
     async update() {

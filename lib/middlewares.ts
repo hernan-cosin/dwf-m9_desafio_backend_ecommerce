@@ -5,13 +5,13 @@ import { decode } from "lib/jwt";
 export function authMiddleware(callback) {
   return function (req: NextApiRequest, res: NextApiResponse) {
     const token = parseToken(req);
-
+    
     if (!token) {
-      res.status(401).send({ message: "no token found" });
+      res.status(401).send({ message: "token not found" });
     }
 
     const decodedToken = decode(token);
-
+    
     if (decodedToken) {
       callback(req, res, decodedToken);
     } else {
