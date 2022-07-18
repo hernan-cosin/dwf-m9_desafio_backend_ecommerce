@@ -1,6 +1,7 @@
 import { Auth } from "models/auth";
 import { User } from "models/user";
 import addMinutes from "date-fns/addMinutes";
+import subMinutes from "date-fns/subMinutes";
 import { sgMail } from "lib/sendgrid";
 import { generate } from "lib/jwt";
 
@@ -111,7 +112,7 @@ export async function verifyEmailAndCode(
   const dbCode = dbAuth?.data.code;
   const dbExpires = dbAuth?.data.expires;
 
-  // si no encuentra email 
+  // si no encuentra email
   if (dbAuth == null) {
     return {
       error: "Email incorrecto",
@@ -129,17 +130,19 @@ export async function verifyEmailAndCode(
     const dbExpirationDate = dbExpires.toDate();
 
     const expired = isExpired(now, dbExpirationDate);
-    
+
     // código vencido
     if (expired) {
       return { error: null, token: null, codeExpired: true };
     }
     // código válido
-    if (!expired) {      
+    if (!expired) {
       const token = generate({ userId: dbAuth.data.userId });
 
       // invalidación del código en dbAuth
-      dbAuth.data.code = "";
+      const fechaAtrasada = subMinutes(dbAuth.data.expires.toDate(), 20);
+
+      dbAuth.data.expires = fechaAtrasada
       await dbAuth.update();
 
       return {
@@ -157,7 +160,7 @@ export async function verifyEmailAndCode(
 function getRandomInt(min, max): number {
   min = Math.ceil(min);
   max = Math.floor(max);
-  return (Math.floor(Math.random() * (max - min + 1)) + min);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 // verifica si el código expiró

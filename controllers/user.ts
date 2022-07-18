@@ -13,7 +13,7 @@ export async function getUserData(token) {
   if (user.data.birthday) {
     user.data.birthday = user.data.birthday.toDate()
   }
-  console.log(user.data);
+  // console.log(user.data);
 
   return user.data;
 }

@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import methods from "micro-method-router";
-import { findOrCreateAuthAndSendCode, sendEmail } from "controllers/auth";
+import { findOrCreateAuthAndSendCode } from "controllers/auth";
 
 export default methods({
   async post(req: NextApiRequest, res: NextApiResponse) {
