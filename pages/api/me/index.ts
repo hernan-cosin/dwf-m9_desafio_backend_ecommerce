@@ -6,7 +6,8 @@ import { getUserData, updateUserData } from "controllers/user";
 const handler = methods({
     get: getHandler,
     patch: patchHandler
-  });
+});
+
 
 async function getHandler(req: NextApiRequest, res: NextApiResponse, token) {
     const userData = await getUserData(token)
