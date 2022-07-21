@@ -15,6 +15,8 @@ export default methods({
         async function page(records, fetchNextPage) {
           // This function (`page`) will get called for each page of records.
           const objects = records.map((r) => {
+            // console.log(r);
+
             return {
               objectID: r.id,
               ...r.fields,
@@ -46,6 +48,8 @@ export default methods({
         async function page(records, fetchNextPage) {
           // This function (`page`) will get called for each page of records.
           const objects = records.map((r) => {
+            // console.log(r);
+
             return {
               objectID: r.id,
               ...r.fields,

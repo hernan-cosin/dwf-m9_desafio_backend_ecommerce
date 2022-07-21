@@ -6,9 +6,9 @@ export default async function(req:NextApiRequest, res: NextApiResponse) {
     const {id, topic} = req.query
 
     if (topic == "merchant_order") {
-        const order = await getMerchantOrder(id)
+        const order = await getMerchantOrder(id)        
 
-        if (order.status == "paid") {
+        if (order.status == "closed") {
             const orderId = order.external_reference
             const myOrder = new Order(orderId)
             await myOrder.get()
@@ -17,7 +17,6 @@ export default async function(req:NextApiRequest, res: NextApiResponse) {
             
         }
 
-        console.log("webhooks",res);
         
     }
     res.send("ok")
