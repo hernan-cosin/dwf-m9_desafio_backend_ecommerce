@@ -8,10 +8,14 @@ async function postHandler(req: NextApiRequest, res: NextApiResponse, token) {
   const { productId } = req.query;
 
   const newOrder = await createOrder(token.userId, productId, req.body);
-
+try {
   const preference = await createPreference(productId, newOrder.newOrderId, req.body,)
-
   res.send({url: preference.init_point, orderId:newOrder.newOrderId});
+} catch(e){
+  console.log(e);
+  
+}
+
 }
 
 const handler = methods({

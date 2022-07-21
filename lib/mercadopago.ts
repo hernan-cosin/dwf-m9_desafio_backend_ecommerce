@@ -3,7 +3,7 @@ import mercadopago from "mercadopago";
 let API_BASE_URL;
 process.env.NODE_ENV == "development"
   ? (API_BASE_URL = "http://localhost:3000")
-  : "https://dwf-m9-desafio-backend-ecommerce.vercel.app";
+  : (API_BASE_URL = "https://dwf-m9-desafio-backend-ecommerce.vercel.app");
 
 mercadopago.configure({
   access_token: process.env.MP_TOKEN,
@@ -15,8 +15,8 @@ export async function getMerchantOrder(id) {
 }
 
 export async function createPreference(productId, orderId, additionalInfo) {
-    console.log("nodeenv", process.env.NODE_ENV);
-    
+  console.log("url", API_BASE_URL);
+
   try {
     const getProductInformationRes = await fetch(
       API_BASE_URL + "/api/products/" + productId,
