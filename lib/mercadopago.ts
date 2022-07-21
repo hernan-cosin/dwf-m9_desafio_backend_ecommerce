@@ -1,8 +1,9 @@
 import mercadopago from "mercadopago";
 
-// let API_BASE_URL
-// process.env.NODE_ENV == "development" ?  API_BASE_URL = "http://localhost:3000" : "https://dwf-m9-desafio-backend-ecommerce.vercel.app";
-
+let API_BASE_URL;
+process.env.NODE_ENV == "development"
+  ? (API_BASE_URL = "http://localhost:3000")
+  : "https://dwf-m9-desafio-backend-ecommerce.vercel.app";
 
 mercadopago.configure({
   access_token: process.env.MP_TOKEN,
@@ -13,13 +14,12 @@ export async function getMerchantOrder(id) {
   return res.body;
 }
 
-export async function createPreference(
-  productId,
-  orderId,
-  additionalInfo,
-) {
+export async function createPreference(productId, orderId, additionalInfo) {
+    console.log("nodeenv", process.env.NODE_ENV);
+    
+  try {
     const getProductInformationRes = await fetch(
-        process.env.API_BASE_URL + "/api/products/" + productId,
+      API_BASE_URL + "/api/products/" + productId,
       {
         method: "GET",
         headers: { "Content-Type": "application/json" },
@@ -47,6 +47,9 @@ export async function createPreference(
         "https://webhook.site/6cb23cdc-7673-433b-8b11-a58dd222522d",
     };
 
-    const res = await mercadopago.preferences.create(data)
-    return res.body
+    const res = await mercadopago.preferences.create(data);
+    return res.body;
+  } catch (e) {
+    console.log(e);
+  }
 }
