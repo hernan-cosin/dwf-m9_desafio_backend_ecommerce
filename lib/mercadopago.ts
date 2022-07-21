@@ -44,7 +44,8 @@ export async function createPreference(productId, orderId, additionalInfo) {
         succes: "https://apx.school",
       },
       notification_url:
-        "https://dwf-m9-desafio-backend-ecommerce.vercel.app/ipn/mercadopago",
+        // "https://webhook.site/6cb23cdc-7673-433b-8b11-a58dd222522d",
+      "https://dwf-m9-desafio-backend-ecommerce.vercel.app/api/ipn/mercadopago",
     };
 
     const res = await mercadopago.preferences.create(data);
