@@ -1,7 +1,7 @@
 import mercadopago from "mercadopago";
 
-let API_BASE_URL
-process.env.NODE_ENV == "development" ?  API_BASE_URL = "http://localhost:3000" : "https://dwf-m9-desafio-backend-ecommerce.vercel.app";
+// let API_BASE_URL
+// process.env.NODE_ENV == "development" ?  API_BASE_URL = "http://localhost:3000" : "https://dwf-m9-desafio-backend-ecommerce.vercel.app";
 
 
 mercadopago.configure({
@@ -19,7 +19,7 @@ export async function createPreference(
   additionalInfo,
 ) {
     const getProductInformationRes = await fetch(
-        API_BASE_URL + "/api/products/" + productId,
+        process.env.API_BASE_URL + "/api/products/" + productId,
       {
         method: "GET",
         headers: { "Content-Type": "application/json" },
