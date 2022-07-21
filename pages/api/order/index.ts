@@ -1,7 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import methods from "micro-method-router";
-import { User } from "models/user";
-// import { Order } from "models/order";
 import { createOrder } from "controllers/order";
 import { authMiddleware } from "lib/middlewares";
 import { createPreference } from "lib/mercadopago";

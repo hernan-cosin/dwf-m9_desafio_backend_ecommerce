@@ -1,7 +1,7 @@
 import mercadopago from "mercadopago";
 
 let API_BASE_URL
-process.env.NODE_ENV == "development" ?  API_BASE_URL = "http://localhost:3000" : "";
+process.env.NODE_ENV == "development" ?  API_BASE_URL = "http://localhost:3000" : "https://dwf-m9-desafio-backend-ecommerce.vercel.app";
 
 
 mercadopago.configure({
