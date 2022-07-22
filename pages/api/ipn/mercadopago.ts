@@ -12,7 +12,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
 
     if (topic == "merchant_order") {
       const order = await getMerchantOrder(id);
-      
+
       if (order.status == "closed") {
         const orderId = order.external_reference;
 
@@ -25,19 +25,24 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
         // envia la confirmación de compra por mail al usuario
         const userId = myOrder.data.userId;
         const email = await getUserEmail(userId);
-        const sendUserConfirmationRes = await sendUserConfirmation(email, orderId);
+        // const sendUserConfirmationRes = await sendUserConfirmation(email, orderId);
 
         // obtiene información para crear registro en airtable para el vendedor
         const productId = myOrder.data.productId;
         const airtableProductId = await getProductInformation(productId);
-        const paymentApprovedDate = order.payments[0].date_approved
-        
+        const paymentApprovedDate = order.payments[0].date_approved;
+
         // crea el registro en airtable
-        await createAirtableConfirmation(airtableProductId.id, email, myOrder.data.status, paymentApprovedDate);
-        
-        if (sendUserConfirmationRes == 202) {
-          res.status(200).send({"emailConfirmationSent": true});
-        }
+        await createAirtableConfirmation(
+          airtableProductId.id,
+          email,
+          myOrder.data.status,
+          paymentApprovedDate
+        );
+
+        // if (sendUserConfirmationRes == 202) {
+        //   res.status(200).send({"emailConfirmationSent": true});
+        // }
       }
     }
   } catch (e) {
@@ -59,15 +64,20 @@ async function sendUserConfirmation(email, orderId) {
     };
 
     const sendgridResponse = await sgMail.send(msg);
-    
-    return sendgridResponse[0].statusCode
+
+    return sendgridResponse[0].statusCode;
   } catch (e) {
     console.log(e);
   }
 }
 
 // crea registro en airtable
-async function createAirtableConfirmation(ProductId, email, status, paymentApprovedDate) {
+async function createAirtableConfirmation(
+  ProductId,
+  email,
+  status,
+  paymentApprovedDate
+) {
   base("ventas").create(
     [
       {
@@ -75,7 +85,7 @@ async function createAirtableConfirmation(ProductId, email, status, paymentAppro
           ProductId: ProductId,
           Comprador: email,
           Status: status,
-          Payment_approved: paymentApprovedDate
+          Payment_approved: paymentApprovedDate,
         },
       },
     ],
@@ -84,6 +94,9 @@ async function createAirtableConfirmation(ProductId, email, status, paymentAppro
         console.error(err);
         return;
       }
+      records.forEach(function (record) {
+        console.log(record.getId());
+      });
     }
   );
 }

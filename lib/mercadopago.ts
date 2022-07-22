@@ -15,42 +15,38 @@ export async function getMerchantOrder(id) {
 }
 
 export async function createPreference(productId, orderId, additionalInfo) {
-    const productInformation = await getProductInformation(productId)
+  const productInformation = await getProductInformation(productId);
 
-    const data = {
-      external_reference: orderId,
-      items: [
-        {
-          title: productInformation.Title,
-          description: productInformation.Description,
-          picture_url: productInformation.Attachments[0].url,
-          category_id: productInformation.Category,
-          quantity: additionalInfo.amount,
-          currency_id: "ARS",
-          unit_price: productInformation.Price,
-        },
-      ],
-      back_urls: {
-        succes: "https://apx.school",
+  const data = {
+    external_reference: orderId,
+    items: [
+      {
+        title: productInformation.Title,
+        description: productInformation.Description,
+        picture_url: productInformation.Attachments[0].url,
+        category_id: productInformation.Category,
+        quantity: additionalInfo.amount,
+        currency_id: "ARS",
+        unit_price: productInformation.Price,
       },
-      notification_url:
-        // "https://webhook.site/6cb23cdc-7673-433b-8b11-a58dd222522d",
+    ],
+    back_urls: {
+      succes: "https://apx.school",
+    },
+    notification_url:
+      // "https://webhook.site/6cb23cdc-7673-433b-8b11-a58dd222522d",
       "https://dwf-m9-desafio-backend-ecommerce.vercel.app/api/ipn/mercadopago",
-    };
+  };
 
-    const res = await mercadopago.preferences.create(data);
-    return res.body;
+  const res = await mercadopago.preferences.create(data);
+  return res.body;
 }
 
 export async function getProductInformation(productId) {
-    const res = await fetch(
-        API_BASE_URL + "/api/products/" + productId,
-        {
-          method: "GET",
-          headers: { "Content-Type": "application/json" },
-        }
-      );
-      const productInformation = await res.json();
-      return productInformation
+  const res = await fetch(API_BASE_URL + "/api/products/" + productId, {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+  });
+  const productInformation = await res.json();
+  return productInformation;
 }
-
