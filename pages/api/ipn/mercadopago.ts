@@ -33,13 +33,14 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
         const paymentApprovedDate = order.payments[0].date_approved;
 
         // crea el registro en airtable
-        await createAirtableConfirmation(
+        const createAirtableConfirmationRes = await createAirtableConfirmation(
           airtableProductId.id,
           email,
           myOrder.data.status,
           paymentApprovedDate
         );
-
+          console.log(createAirtableConfirmationRes);
+          
         // if (sendUserConfirmationRes == 202) {
         //   res.status(200).send({"emailConfirmationSent": true});
         // }
@@ -78,27 +79,20 @@ async function createAirtableConfirmation(
   status,
   paymentApprovedDate
 ) {
-  console.log(ProductId, email, status, paymentApprovedDate);
-
   base("ventas").create(
-    [
-      {
-        fields: {
+        {
           ProductId: ProductId,
           Comprador: email,
           Status: status,
           Payment_approved: paymentApprovedDate,
         },
-      },
-    ],
-    function (err, records) {
+    function (err, record) {
       if (err) {
         console.error(err);
         return;
       }
-      records.forEach(function (record) {
         console.log(record.getId());
-      });
+        return record.getId()
     }
   );
 }
