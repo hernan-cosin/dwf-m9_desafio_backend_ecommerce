@@ -39,8 +39,8 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
           myOrder.data.status,
           paymentApprovedDate
         );
-          console.log(createAirtableConfirmationRes);
-          
+        console.log(createAirtableConfirmationRes);
+        return;
         // if (sendUserConfirmationRes == 202) {
         //   res.status(200).send({"emailConfirmationSent": true});
         // }
@@ -80,19 +80,19 @@ async function createAirtableConfirmation(
   paymentApprovedDate
 ) {
   base("ventas").create(
-        {
-          ProductId: ProductId,
-          Comprador: email,
-          Status: status,
-          Payment_approved: paymentApprovedDate,
-        },
+    {
+      ProductId: ProductId,
+      Comprador: email,
+      Status: status,
+      Payment_approved: paymentApprovedDate,
+    },
     function (err, record) {
       if (err) {
         console.error(err);
         return;
       }
-        console.log(record.getId());
-        return record.getId()
+      console.log(record.getId());
+      return record.getId();
     }
   );
 }
