@@ -1,4 +1,5 @@
 import { User } from "models/user";
+import { useTransition } from "react";
 
 type Address = {
   street:string,
@@ -21,6 +22,11 @@ export async function getUserData(token) {
 export async function updateUserData(token, updateData) {
   const user = new User(token.userId);
   await user.get();
+
+  if (user.data.birthday) {
+    const convertedDate = new Date(user.data.birthday)
+    updateData.birthday = convertedDate    
+  }
 
   user.data = {
     ...updateData,

@@ -36,7 +36,7 @@ async function postHandler(req: NextApiRequest, res: NextApiResponse) {
     res.status(200).send({token: verifyResponse.token})
   } if (verifyResponse.error) {
     res.status(400).send(verifyResponse.error)
-  } if ( verifyResponse.codeExpired) {
+  } if (verifyResponse.codeExpired) {
     res.status(401).send({codeExpired: verifyResponse.codeExpired})
   }
   

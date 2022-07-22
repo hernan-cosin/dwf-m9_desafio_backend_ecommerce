@@ -15,17 +15,7 @@ export async function getMerchantOrder(id) {
 }
 
 export async function createPreference(productId, orderId, additionalInfo) {
-  console.log("url", API_BASE_URL);
-
-  try {
-    const getProductInformationRes = await fetch(
-      API_BASE_URL + "/api/products/" + productId,
-      {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      }
-    );
-    const productInformation = await getProductInformationRes.json();
+    const productInformation = await getProductInformation(productId)
 
     const data = {
       external_reference: orderId,
@@ -50,7 +40,17 @@ export async function createPreference(productId, orderId, additionalInfo) {
 
     const res = await mercadopago.preferences.create(data);
     return res.body;
-  } catch (e) {
-    console.log(e);
-  }
 }
+
+export async function getProductInformation(productId) {
+    const res = await fetch(
+        API_BASE_URL + "/api/products/" + productId,
+        {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      const productInformation = await res.json();
+      return productInformation
+}
+
