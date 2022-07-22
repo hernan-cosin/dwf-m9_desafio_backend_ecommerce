@@ -78,6 +78,8 @@ async function createAirtableConfirmation(
   status,
   paymentApprovedDate
 ) {
+  console.log(ProductId, email, status, paymentApprovedDate);
+
   base("ventas").create(
     [
       {
