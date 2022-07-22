@@ -30,7 +30,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
         // obtiene información para crear registro en airtable para el vendedor
         const productId = myOrder.data.productId;
         const airtableProductId = await getProductInformation(productId);
-        const paymentApprovedDate = new Date(order.payments[0].date_approved)
+        const paymentApprovedDate = order.payments[0].date_approved
         
         // crea el registro en airtable
         await createAirtableConfirmation(airtableProductId.id, email, myOrder.data.status, paymentApprovedDate);
