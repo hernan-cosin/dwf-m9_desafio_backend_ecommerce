@@ -31,7 +31,7 @@ export async function createPreference(productId, orderId, additionalInfo) {
       },
     ],
     back_urls: {
-      succes: "https://apx.school",
+      succes: "https://google.com.ar",
     },
     notification_url:
       // "https://webhook.site/6cb23cdc-7673-433b-8b11-a58dd222522d",

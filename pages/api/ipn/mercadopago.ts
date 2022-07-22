@@ -13,6 +13,8 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     if (topic == "merchant_order") {
       const order = await getMerchantOrder(id);
 
+      // console.log(order);
+
       if (order.status == "closed") {
         const orderId = order.external_reference;
 
@@ -25,25 +27,23 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
         // envia la confirmación de compra por mail al usuario
         const userId = myOrder.data.userId;
         const email = await getUserEmail(userId);
-        // const sendUserConfirmationRes = await sendUserConfirmation(email, orderId);
+        const sendUserConfirmationRes = await sendUserConfirmation(email, orderId);
 
         // obtiene información para crear registro en airtable para el vendedor
         const productId = myOrder.data.productId;
         const airtableProductId = await getProductInformation(productId);
-        const paymentApprovedDate = order.payments[0].date_approved;
+        const paymentApprovedDate = new Date(order.payments[0].date_approved);
 
         // crea el registro en airtable
         const createAirtableConfirmationRes = await createAirtableConfirmation(
           airtableProductId.id,
           email,
           myOrder.data.status,
-          paymentApprovedDate
+          paymentApprovedDate.toString()
         );
-        console.log(createAirtableConfirmationRes);
-        return;
-        // if (sendUserConfirmationRes == 202) {
-        //   res.status(200).send({"emailConfirmationSent": true});
-        // }
+        // console.log(createAirtableConfirmationRes);
+
+          res.status(200).send("ok");
       }
     }
   } catch (e) {
