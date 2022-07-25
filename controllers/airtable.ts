@@ -8,21 +8,26 @@ export async function findOrCreateAirtableConfirmation(
   paymentApprovedDate,
   orderId
 ) {
-  base("ventas").create(
-    {
-      ProductId: ProductId,
-      MerchantOrderId: MerchantOrderId,
-      Comprador: email,
-      Status: status,
-      Payment_approved_date: paymentApprovedDate,
-      OrderId: orderId
-    },
-    function (err, record) {
-      if (err) {
-        console.error(err);
-        return;
+  try {
+    base("ventas").create(
+      {
+        ProductId: ProductId,
+        MerchantOrderId: MerchantOrderId,
+        Comprador: email,
+        Status: status,
+        Payment_approved_date: paymentApprovedDate,
+        OrderId: orderId
+      },
+      function (err, record) {
+        if (err) {
+          console.error(err);
+          return;
+        }
+        return record.getId();
       }
-      return record.getId();
-    }
-  );
+    );
+  }catch (e) {
+    console.log(e);
+    
+  }
 }
