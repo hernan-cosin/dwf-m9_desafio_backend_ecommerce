@@ -11,3 +11,12 @@ export async function createOrder(userId, productId, additionalInfo) {
 
     return {newOrderId:newOrder.id, newOrderData: newOrder.data}
 }
+
+export async function updateOrderStatus(orderId){
+    const myOrder = new Order(orderId);
+    await myOrder.get();
+    myOrder.data.status = "closed";
+    await myOrder.update();
+    
+    return myOrder 
+}
