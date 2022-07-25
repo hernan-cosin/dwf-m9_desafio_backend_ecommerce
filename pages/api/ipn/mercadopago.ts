@@ -29,18 +29,15 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
         const merchantOrderApprovedDate = new Date(
           order.payments[0].date_approved
         );
-          console.log("MERCHANTORDERAPPROVEDDATE", merchantOrderApprovedDate);
           
-          // formateando la fecha
-          const paymentApprovedDate =
-          merchantOrderApprovedDate.toDateString() +
-          " " +
-          merchantOrderApprovedDate.toLocaleTimeString('es-AR', {
-            timeZone:	"America/Argentina/Buenos_Aires",
-          });
+        // formateando la fecha
+        const paymentApprovedDate =
+        merchantOrderApprovedDate.toDateString() +
+        " " +
+        merchantOrderApprovedDate.toLocaleTimeString('es-AR', {
+          timeZone:	"America/Argentina/Buenos_Aires",
+        });
           
-          console.log("PARMENTAPPROVEDDATE", paymentApprovedDate);
-
         // crea el registro en airtable
         await findOrCreateAirtableConfirmation(
           productInformation.id,

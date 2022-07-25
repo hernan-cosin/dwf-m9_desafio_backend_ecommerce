@@ -20,3 +20,13 @@ export async function updateOrderStatus(orderId) :Promise<Order>{
     
     return myOrder 
 }
+
+export async function getMyOrders(userId) {
+    const orders = await Order.getOrdersById(userId)
+
+    if (orders.length > 0) {
+        return orders
+    } else {
+        return []
+    }
+}
