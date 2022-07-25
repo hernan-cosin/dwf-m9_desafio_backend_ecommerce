@@ -29,12 +29,15 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
         const merchantOrderApprovedDate = new Date(
           order.payments[0].date_approved
         );
-
-        // formateando la fecha
-        const paymentApprovedDate =
+          console.log("MERCHANTORDERAPPROVEDDATE", merchantOrderApprovedDate);
+          
+          // formateando la fecha
+          const paymentApprovedDate =
           merchantOrderApprovedDate.toDateString() +
           " " +
-          merchantOrderApprovedDate.toLocaleTimeString();
+          merchantOrderApprovedDate.toLocaleTimeString("419");
+          
+          console.log("PARMENTAPPROVEDDATE", paymentApprovedDate);
 
         // crea el registro en airtable
         await findOrCreateAirtableConfirmation(
@@ -42,7 +45,8 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
           order.id,
           email,
           myOrder.data.status,
-          paymentApprovedDate
+          paymentApprovedDate,
+          orderId
         );
                   
         res.status(200).send("ok");

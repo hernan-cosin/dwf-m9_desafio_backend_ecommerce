@@ -5,7 +5,8 @@ export async function findOrCreateAirtableConfirmation(
   MerchantOrderId,
   email,
   status,
-  paymentApprovedDate
+  paymentApprovedDate,
+  orderId
 ) {
   base("ventas").create(
     {
@@ -14,6 +15,7 @@ export async function findOrCreateAirtableConfirmation(
       Comprador: email,
       Status: status,
       Payment_approved_date: paymentApprovedDate,
+      OrderId: orderId
     },
     function (err, record) {
       if (err) {
