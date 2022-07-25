@@ -1,5 +1,5 @@
 import mercadopago from "mercadopago";
-import {getProductInformation} from "lib/product"
+import { getProductInformation } from "lib/product";
 
 mercadopago.configure({
   access_token: process.env.MP_TOKEN,
