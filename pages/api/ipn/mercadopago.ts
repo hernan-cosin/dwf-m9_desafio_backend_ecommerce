@@ -35,7 +35,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
           const paymentApprovedDate =
           merchantOrderApprovedDate.toDateString() +
           " " +
-          merchantOrderApprovedDate.toLocaleTimeString();
+          merchantOrderApprovedDate.toLocaleTimeString(undefined, {timeZone:"UYT"});
           
           console.log("PARMENTAPPROVEDDATE", paymentApprovedDate);
 
