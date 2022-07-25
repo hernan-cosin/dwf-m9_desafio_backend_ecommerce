@@ -12,7 +12,7 @@ export async function createOrder(userId, productId, additionalInfo) {
     return {newOrderId:newOrder.id, newOrderData: newOrder.data}
 }
 
-export async function updateOrderStatus(orderId){
+export async function updateOrderStatus(orderId) :Promise<Order>{
     const myOrder = new Order(orderId);
     await myOrder.get();
     myOrder.data.status = "closed";

@@ -49,8 +49,8 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
           orderId
         );
                   
-        res.status(200).send("ok");
       }
+      res.status(200).send("ok");
     }
   } catch (e) {
     console.log(e);
