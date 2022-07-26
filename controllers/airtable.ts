@@ -1,6 +1,14 @@
 import { base } from "lib/airtable";
+import { ventasIndex } from "lib/algolia";
+import { updateAlgoliaVentasIndex } from "lib/fetchs/sync-ventas";
 
-export async function findOrCreateAirtableConfirmation(
+export async function FindAlgoliaVentaObject(merchantOrder) {
+  const algoliaVentaRecord = await ventasIndex.search(merchantOrder as string)
+  console.log("ALGOLIA", algoliaVentaRecord);
+  return  algoliaVentaRecord
+}
+
+export async function createAirtableConfirmationAndUpdateAlgolia(
   ProductId,
   MerchantOrderId,
   email,
@@ -9,23 +17,27 @@ export async function findOrCreateAirtableConfirmation(
   orderId
 ) {
   try {
-    base("ventas").create(
-      {
-        ProductId: ProductId,
-        MerchantOrderId: MerchantOrderId,
-        Comprador: email,
-        Status: status,
-        Payment_approved_date: paymentApprovedDate,
-        OrderId: orderId
-      },
-      function (err, record) {
-        if (err) {
-          console.error(err);
-          return;
+      // crea el registro en airtable
+      const p = base("ventas").create(
+        {
+          ProductId: ProductId,
+          MerchantOrderId: MerchantOrderId,
+          Comprador: email,
+          Status: status,
+          Payment_approved_date: paymentApprovedDate,
+          OrderId: orderId
+        },
+        async function (err, record) {
+          if (err) {
+            console.error(err);
+            return;
+          }
+          // actualiza algolia con el registro creado en airtable
+          const updateAlgoliaVentasIndexRes = await updateAlgoliaVentasIndex()
+          console.log(updateAlgoliaVentasIndexRes);
+          return record.getId();
         }
-        return record.getId();
-      }
-    );
+      )
   }catch (e) {
     console.log(e);
     
