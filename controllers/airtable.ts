@@ -4,7 +4,6 @@ import { updateAlgoliaVentasIndex } from "lib/fetchs/sync-ventas";
 
 export async function FindAlgoliaVentaObject(merchantOrder) {
   const algoliaVentaRecord = await ventasIndex.search(merchantOrder as string)
-  console.log("ALGOLIA", algoliaVentaRecord);
   return  algoliaVentaRecord
 }
 
@@ -18,7 +17,7 @@ export async function createAirtableConfirmationAndUpdateAlgolia(
 ) {
   try {
       // crea el registro en airtable
-      const p = base("ventas").create(
+      base("ventas").create(
         {
           ProductId: ProductId,
           MerchantOrderId: MerchantOrderId,
@@ -34,7 +33,6 @@ export async function createAirtableConfirmationAndUpdateAlgolia(
           }
           // actualiza algolia con el registro creado en airtable
           const updateAlgoliaVentasIndexRes = await updateAlgoliaVentasIndex()
-          console.log(updateAlgoliaVentasIndexRes);
           return record.getId();
         }
       )

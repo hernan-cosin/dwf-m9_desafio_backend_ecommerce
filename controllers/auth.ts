@@ -24,7 +24,7 @@ type verifyEmailAndCodeResponse = {
 export async function findOrCreateAuthAndSendCode(
   email: string
 ): Promise<findOrCreateAuthAndSendCodeResponse> {
-  const cleanEmail = email.trim().toLocaleLowerCase();
+  const cleanEmail = email.trim().toLowerCase();
 
   const auth = await Auth.findByEmail(cleanEmail);
 

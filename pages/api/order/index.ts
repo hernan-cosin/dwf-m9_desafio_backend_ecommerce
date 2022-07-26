@@ -14,14 +14,8 @@ async function postHandler(req: NextApiRequest, res: NextApiResponse, token) {
   res.send({url: preference.init_point, orderId:newOrder.newOrderId});
 }
 
-// async function getHandler(req: NextApiRequest, res: NextApiResponse, token) {
-//   // const { orderId } = req.query;
-//   // res.send(orderId)
-// }
-
 const handler = methods({
   post: postHandler,
-  // get: getHandler
 });
 
 export default authMiddleware(handler);

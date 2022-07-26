@@ -4,7 +4,7 @@ import { findOrCreateAuthAndSendCode } from "controllers/auth";
 
 export default methods({
   async post(req: NextApiRequest, res: NextApiResponse) {
-    const email = req.body.email.trim().toLocaleLowerCase();
+    const email = req.body.email.trim().toLowerCase();
 
     const findOrCreateResponse = await findOrCreateAuthAndSendCode(email);
 

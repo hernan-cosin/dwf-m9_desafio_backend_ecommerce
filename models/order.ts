@@ -30,7 +30,7 @@ export class Order {
   }
 
   
-  static async getOrdersById(userId) {
+  static async getOrdersByUserId(userId) {
     const ordersByIdSnap = await collection.where("userId", "==", userId).get();
 
     if (ordersByIdSnap.docs.length) {
@@ -51,5 +51,17 @@ export class Order {
     } else {
       return null;
     }
+  }
+
+  static async getOrdersByOrderId(orderId){
+    const order = await collection.doc(orderId).get()
+    
+    if (order.exists == false) {
+      return []
+    }
+    else {
+      return order.data()
+    }
+
   }
 }
