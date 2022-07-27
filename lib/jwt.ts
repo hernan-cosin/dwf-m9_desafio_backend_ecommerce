@@ -10,13 +10,8 @@ export function generate(obj): string {
 }
 
 export function decode(token) {
-  try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     return decoded;
-  } catch (e) {
-    console.log("Invalid token", e);
 
-    return null;
-  }
 }
