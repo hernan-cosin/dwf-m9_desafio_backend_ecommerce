@@ -30,8 +30,8 @@ export async function createPreference(productId, orderId, additionalInfo) {
       succes: "https://google.com.ar",
     },
     notification_url:
-      "https://webhook.site/6cb23cdc-7673-433b-8b11-a58dd222522d",
-      // "https://dwf-m9-desafio-backend-ecommerce.vercel.app/api/ipn/mercadopago",
+      // "https://webhook.site/6cb23cdc-7673-433b-8b11-a58dd222522d",
+      "https://dwf-m9-desafio-backend-ecommerce.vercel.app/api/ipn/mercadopago",
   };
 
   const res = await mercadopago.preferences.create(data);
