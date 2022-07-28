@@ -96,8 +96,8 @@ export async function sendEmail(email: string, code: number) {
 
   console.log(email, code);
 
-  // const sendgridResponse = await sgMail.send(msg);
-  // return sendgridResponse;
+  const sendgridResponse = await sgMail.send(msg);
+  return sendgridResponse;
 }
 
 // verifica que el código y el email enviados por el usuario coincidan
