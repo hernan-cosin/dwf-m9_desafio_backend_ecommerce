@@ -1,19 +1,15 @@
 import { User } from "models/user";
 
 type Address = {
-  street:string,
-  streetNumber:number,
-  number:string
-}
+  street: string;
+  streetNumber: number;
+  number: string;
+};
 
 export async function getUserData(token) {
   const user = new User(token.userId);
 
   await user.get();
-  // if (user.data.birthday) {
-    // user.data.birthday = user.data.birthday.toDate()
-  // }
-  // console.log(user.data);
 
   return user.data;
 }
@@ -22,9 +18,14 @@ export async function updateUserData(token, updateData) {
   const user = new User(token.userId);
   await user.get();
 
-  if (user.data.birthday) {
-    const convertedDate = new Date(user.data.birthday)
-    updateData.birthday = convertedDate    
+  // si el usuario provee fecha de nacimiento
+  if (updateData.birthday) {
+    console.log(updateData.birthday);
+    
+    const birthdayFromUpdateData = new Date (updateData.birthday.year, updateData.birthday.month -1, updateData.birthday.day)
+    console.log(birthdayFromUpdateData);
+    
+    updateData.birthday = birthdayFromUpdateData;
   }
 
   user.data = {
