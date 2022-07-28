@@ -11,14 +11,16 @@ export default methods({
     const results = await foodIndex.search(q as string, {
       offset: offset,
       length: limit,
-    });
+    }) as any;
+
+    const filteredStockResults = results.hits.filter((r)=>{return r.Stock > 0})    
 
     res.send({
-      results: results.hits,
+      results: filteredStockResults,
       pagination: {
         offset: offset,
         limit: limit,
-        total: results.nbHits,
+        total: filteredStockResults.length,
       },
     });
   },
