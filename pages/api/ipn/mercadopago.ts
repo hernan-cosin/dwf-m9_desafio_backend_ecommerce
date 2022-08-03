@@ -6,8 +6,8 @@ import { updateOrderStatus } from "controllers/order";
 import { sendUserConfirmation } from "controllers/sendgrid";
 import {
   createAirtableConfirmationAndUpdateAlgolia,
-  FindAlgoliaVentaObject,
 } from "controllers/airtable";
+import { FindAlgoliaVentaObject } from "models/ventas";
 
 export default async function (req: NextApiRequest, res: NextApiResponse) {
   try {
@@ -30,7 +30,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
           // envia la confirmación de compra por mail al usuario
           const userId = myOrder.data.userId;
           const email = await getUserEmail(userId);
-          const sendUserConfirmationRes = await sendUserConfirmation(email, orderId);
+          // const sendUserConfirmationRes = await sendUserConfirmation(email, orderId);
 
           // obtiene información para crear registro en airtable para el vendedor
           const productId = myOrder.data.productId;
@@ -48,7 +48,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
             });
 
           // crea el registro en airtable y actualiza algolia
-          await createAirtableConfirmationAndUpdateAlgolia(
+          const ventaResponse = await createAirtableConfirmationAndUpdateAlgolia(
             productInformation.id,
             order.id.toString(),
             email,
@@ -56,10 +56,13 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
             paymentApprovedDate,
             orderId
           );
+          
+          if( ventaResponse.message == "created"){
+            res.status(200).send("ok");
+          }
         } else {
         }
       }
-      res.status(200).send("ok");
     }
   } catch (e) {
     console.log(e);
