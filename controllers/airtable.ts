@@ -1,15 +1,17 @@
 import { generateNewSell } from "models/ventas";
 
-export async function createAirtableConfirmationAndUpdateAlgolia(
-  ProductId,
-  MerchantOrderId,
-  email,
-  status,
-  paymentApprovedDate,
-  orderId
-) {
+interface DataSell {
+  ProductId: string,
+  MerchantOrderId: string,
+  email: string,
+  status: string,
+  paymentApprovedDate: string,
+  orderI: string
+}
+
+export async function createSellConfirmationAndUpdateIndexDb(data: DataSell) {
   try {
-    const response = await generateNewSell({ProductId,MerchantOrderId, email, status, paymentApprovedDate, orderId})
+    const response = await generateNewSell(data)
   
     return response
   }catch (e) {

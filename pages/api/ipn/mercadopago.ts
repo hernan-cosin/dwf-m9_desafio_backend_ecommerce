@@ -3,9 +3,9 @@ import { getMerchantOrder } from "lib/mercadopago";
 import { User } from "models/user";
 import { getProductInformation } from "lib/fetchs/product";
 import { updateOrderStatus } from "controllers/order";
-import { sendUserConfirmation } from "controllers/sendgrid";
+import { sendUserConfirmation } from "lib/sendgrid";
 import {
-  createAirtableConfirmationAndUpdateAlgolia,
+  createSellConfirmationAndUpdateIndexDb,
 } from "controllers/airtable";
 import { FindAlgoliaVentaObject } from "models/ventas";
 
@@ -30,7 +30,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
           // envia la confirmación de compra por mail al usuario
           const userId = myOrder.data.userId;
           const email = await getUserEmail(userId);
-          // const sendUserConfirmationRes = await sendUserConfirmation(email, orderId);
+          const sendUserConfirmationRes = await sendUserConfirmation(email, orderId);
 
           // obtiene información para crear registro en airtable para el vendedor
           const productId = myOrder.data.productId;
@@ -48,14 +48,14 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
             });
 
           // crea el registro en airtable y actualiza algolia
-          const ventaResponse = await createAirtableConfirmationAndUpdateAlgolia(
-            productInformation.id,
-            order.id.toString(),
-            email,
-            myOrder.data.status,
-            paymentApprovedDate,
-            orderId
-          );
+          const ventaResponse = await createSellConfirmationAndUpdateIndexDb({
+            ProductId: productInformation.id,
+            MerchantOrderId: order.id.toString(),
+            email: email,
+            status: myOrder.data.status,
+            paymentApprovedDate: paymentApprovedDate,
+            orderI: orderId
+          });
           
           if( ventaResponse.message == "created"){
             res.status(200).send("ok");

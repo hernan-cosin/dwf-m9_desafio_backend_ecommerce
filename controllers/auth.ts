@@ -2,13 +2,13 @@ import { Auth } from "models/auth";
 import { User } from "models/user";
 import addMinutes from "date-fns/addMinutes";
 import subMinutes from "date-fns/subMinutes";
-import { sgMail } from "lib/sendgrid";
+import { sendEmail } from "lib/sendgrid";
 import { generate } from "lib/jwt";
 
 type findOrCreateAuthAndSendCodeResponse = {
   authFound: boolean;
   authCreated: boolean;
-  sendCodeToFirebase: boolean;
+  sendCodeToDb: boolean;
 };
 
 type verifyEmailAndCodeResponse = {
@@ -29,13 +29,13 @@ export async function findOrCreateAuthAndSendCode(
   const auth = await Auth.findByEmail(cleanEmail);
 
   if (auth) {
-    const sendCodeRes = await sendCodeToFirebase(auth);
+    const sendCodeRes = await sendCodeToDb(auth);
     const code = sendCodeRes.code;
     await sendEmail(cleanEmail, code);
     return {
       authFound: true,
       authCreated: false,
-      sendCodeToFirebase: sendCodeRes.sendCode,
+      sendCodeToDb: sendCodeRes.sendCode,
     };
   } else {
     const newUser = await User.createNewUser({
@@ -49,20 +49,20 @@ export async function findOrCreateAuthAndSendCode(
       expires: new Date(),
     });
 
-    const sendCodeRes = await sendCodeToFirebase(newAuth);
+    const sendCodeRes = await sendCodeToDb(newAuth);
     const code = sendCodeRes.code;
     await sendEmail(cleanEmail, code);
 
     return {
       authFound: false,
       authCreated: true,
-      sendCodeToFirebase: sendCodeRes.sendCode,
+      sendCodeToDb: sendCodeRes.sendCode,
     };
   }
 }
 
 // genera y envia el código a firebase auth collection
-export async function sendCodeToFirebase(auth: Auth) {
+export async function sendCodeToDb(auth: Auth) {
   try {
     const code = getRandomInt(10000, 99999);
     auth.data.code = code;
@@ -83,22 +83,22 @@ export async function sendCodeToFirebase(auth: Auth) {
 }
 
 // envia mail via sendGrid
-export async function sendEmail(email: string, code: number) {
-  const msg = {
-    to: email,
-    from: "hcosin@gmail.com", // Use the email address or domain you verified above
-    subject: "Your access code",
-    html:
-      '<div style=""><h3 style="font-family: sans-serif;">Enter this code to acces: </h3><h1 style="font-family: san-serif;">' +
-      code +
-      "</h1></div></div>",
-  };
+// export async function sendEmail(email: string, code: number) {
+//   const msg = {
+//     to: email,
+//     from: "hcosin@gmail.com", // Use the email address or domain you verified above
+//     subject: "Your access code",
+//     html:
+//       '<div style=""><h3 style="font-family: sans-serif;">Enter this code to acces: </h3><h1 style="font-family: san-serif;">' +
+//       code +
+//       "</h1></div></div>",
+//   };
 
-  console.log(email, code);
+//   console.log(email, code);
 
-  const sendgridResponse = await sgMail.send(msg);
-  return sendgridResponse;
-}
+//   const sendgridResponse = await sgMail.send(msg);
+//   return sendgridResponse;
+// }
 
 // verifica que el código y el email enviados por el usuario coincidan
 // con el codigo y el email en el registro auth
