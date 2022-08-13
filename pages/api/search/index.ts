@@ -8,12 +8,14 @@ export default methods({
     const { limit, offset } = getOffsetAndLimitFromReq(req, 100, 100);
     const q = req.query.q;
 
-    const results = await foodIndex.search(q as string, {
+    const results = (await foodIndex.search(q as string, {
       offset: offset,
       length: limit,
-    }) as any;
+    })) as any;
 
-    const filteredStockResults = results.hits.filter((r)=>{return r.Stock > 0})    
+    const filteredStockResults = results.hits.filter((r) => {
+      return r.Stock > 0;
+    });
 
     res.send({
       results: filteredStockResults,

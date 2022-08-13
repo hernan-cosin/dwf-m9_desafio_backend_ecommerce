@@ -2,7 +2,7 @@ import { base } from "lib/airtable";
 import { ventasIndex } from "lib/algolia";
 import { updateAlgoliaVentasIndex } from "lib/fetchs/sync-ventas";
 
-export async function FindAlgoliaVentaObject(merchantOrder) {
+export async function FindVentaObject(merchantOrder) {
   const algoliaVentaRecord = await ventasIndex.search(merchantOrder as string);
   return algoliaVentaRecord;
 }

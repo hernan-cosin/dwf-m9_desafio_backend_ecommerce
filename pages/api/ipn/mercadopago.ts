@@ -7,7 +7,7 @@ import { sendUserConfirmation } from "lib/sendgrid";
 import {
   createSellConfirmationAndUpdateIndexDb,
 } from "controllers/airtable";
-import { FindAlgoliaVentaObject } from "models/ventas";
+import { FindVentaObject } from "models/ventas";
 
 export default async function (req: NextApiRequest, res: NextApiResponse) {
   try {
@@ -17,7 +17,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
       // verifica que no haya un registro en algolia con el id de merchant order
       // para evitar que se generen dos registros en airtable
       // por que mercadopago envía dos notificaciones con el merchant order id
-      const algoliaVentaRecord = await FindAlgoliaVentaObject(id);
+      const algoliaVentaRecord = await FindVentaObject(id);
 
       if (algoliaVentaRecord.hits.length == 0) {
         const order = await getMerchantOrder(id);
