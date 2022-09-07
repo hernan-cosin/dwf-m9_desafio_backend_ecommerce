@@ -31,7 +31,7 @@ export async function createPreference(productId, orderId, additionalInfo) {
         },
       ],
       back_urls: {
-        success: "http://localhost:3000",
+        success: "https://m10-desafio.vercel.app/thanks",
       },
       notification_url:
         // "https://webhook.site/6cb23cdc-7673-433b-8b11-a58dd222522d",
