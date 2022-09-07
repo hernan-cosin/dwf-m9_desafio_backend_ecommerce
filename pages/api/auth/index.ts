@@ -18,7 +18,7 @@ async function postHandler(req: NextApiRequest, res: NextApiResponse) {
 
   const findOrCreateResponse = await findOrCreateAuthAndSendCode(email);
   
-  res.send(findOrCreateResponse);
+  res.status(200).send(findOrCreateResponse);
 }
 
 const postHandlerWithValidation = validateMiddleware(bodySchema, postHandler)

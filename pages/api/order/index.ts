@@ -5,13 +5,18 @@ import { authMiddleware } from "lib/middlewares";
 import { createPreference } from "lib/mercadopago";
 
 async function postHandler(req: NextApiRequest, res: NextApiResponse, token) {
-  const { productId } = req.query;
-
-  const newOrder = await createOrder(token.userId, productId, req.body);
-
-  const preference = await createPreference(productId, newOrder.newOrderId, req.body,)
+  try {
+    const { productId } = req.query;
   
-  res.send({url: preference.init_point, orderId:newOrder.newOrderId});
+    const newOrder = await createOrder(token.userId, productId, req.body);
+    // console.log("newOrder",newOrder)  
+    const preference = await createPreference(productId, newOrder.newOrderId, req.body,)
+    // console.log("preference",preference)    
+    res.send({url: preference.init_point, orderId:newOrder.newOrderId});
+  } catch (e) {
+    console.log(e);
+    
+  }
 }
 
 const handler = methods({

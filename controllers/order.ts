@@ -4,7 +4,7 @@ export async function createOrder(userId, productId, additionalInfo) {
     const newOrder = await Order.createNewOrder({
             userId: userId,
             productId,
-            additionalInfo: additionalInfo,
+            additionalInfo: JSON.parse(additionalInfo),
             status: "pending",
             createdAt: new Date()
     });    

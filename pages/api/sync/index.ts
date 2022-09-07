@@ -5,7 +5,8 @@ import { foodIndex } from "lib/algolia";
 
 export default methods({
   async get(req: NextApiRequest, res: NextApiResponse) {
-    base("milanesas")
+    try{    
+      base("milanesas")
       .select({
         pageSize: 5,
         view: "Grid view",
@@ -71,5 +72,10 @@ export default methods({
           }
         }
       );
+  } catch(e) {
+    console.log(e);
+    
+  }
+
   },
 });
