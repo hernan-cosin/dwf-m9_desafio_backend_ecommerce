@@ -10,28 +10,20 @@ export default methods({
     const limit = req.query.hitsPerPage
     const page = req.query.page 
     const q = req.query.q;
-console.log(req.query);
-console.log(q);
-
 
     const results = (await foodIndex.search(q as string, {
       page: page ? parseInt(page as string) : 0,
       hitsPerPage: page ? parseInt(limit as string) : 5,
-      // offset: offset,
-      // length: limit,
     })) as any;    
-    // console.log("PAGINATION",results)
-
+    
     const filteredStockResults = results.hits.filter((r) => {
       return r.Stock > 0;
     });
 
     res.send({
-      results: filteredStockResults,
+      results: results.hits,
       pagination: {
-        // offset: offset,
-        // limit: limit,
-        inPage: filteredStockResults.length,
+        inPage: results.hits.length,
         total: results.nbHits,
         hitsPerPage: results.hitsPerPage,
         nbPages: results.nbPages,

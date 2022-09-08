@@ -14,8 +14,8 @@ export async function sendEmail(email: string, code: number) {
 
   console.log(email, code);
 
-  const sendgridResponse = await sgMail.send(msg);
-  return sendgridResponse;
+  // const sendgridResponse = await sgMail.send(msg);
+  // return sendgridResponse;
 }
 
 export async function sendUserConfirmation(email, orderId) {

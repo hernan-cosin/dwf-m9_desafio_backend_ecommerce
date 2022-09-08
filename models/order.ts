@@ -42,7 +42,13 @@ export class Order {
         myOrders.push(
           {
             orderId: doc.id,
-            status: doc.data().status
+            status: doc.data().status,
+            aditionalInfo: doc.data().additionalInfo,
+            createdAt: doc.data().createdAt.toDate().toLocaleDateString('es-AR', {
+              timeZone:	"America/Argentina/Buenos_Aires",
+            }) + " " + doc.data().createdAt.toDate().toLocaleTimeString('es-AR', {
+              timeZone:	"America/Argentina/Buenos_Aires",
+            })
           }
         ) 
       }

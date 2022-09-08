@@ -20,6 +20,7 @@ export async function patchHandler(
   token
 ) {
   const updateData = req.body;
+  delete updateData.token
 
   const updatedUserDataResponse = await updateUserData(token, updateData);
   if (updatedUserDataResponse) {
