@@ -55,7 +55,7 @@ export class Order {
 
       return myOrders
     } else {
-      return null;
+      return [];
     }
   }
 

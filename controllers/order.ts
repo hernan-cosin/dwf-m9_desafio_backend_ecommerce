@@ -23,7 +23,7 @@ export async function updateOrderStatus(orderId) :Promise<Order>{
 
 export async function getMyOrders(userId) {
     const orders = await Order.getOrdersByUserId(userId)
-
+    
     if (orders.length > 0) {
         return orders
     } else {
